@@ -124,6 +124,7 @@ contract MockOracle is ChainlinkRequestInterface, LinkTokenReceiver {
     // All updates to the oracle's fulfillment should come before calling the
     // callback(addr+functionId) as it is untrusted.
     // See: https://solidity.readthedocs.io/en/develop/security-considerations.html#use-the-checks-effects-interactions-pattern
+    _data = "dummy value";
     (bool success, ) = req.callbackAddr.call(abi.encodeWithSelector(req.callbackFunctionId, _requestId, _data)); // solhint-disable-line avoid-low-level-calls
     return success;
   }
