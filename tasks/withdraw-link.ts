@@ -3,7 +3,7 @@ import { BigNumber, utils, constants, ContractTransaction } from "ethers"
 import { task } from "hardhat/config"
 import { HardhatRuntimeEnvironment, TaskArguments } from "hardhat/types"
 import { networkConfig, getNetworkIdFromName } from "../helper-hardhat-config"
-import { LinkToken, LinkToken__factory, RandomNumberConsumer, RandomNumberConsumer__factory } from "../typechain"
+import { LinkToken, LinkToken__factory, APIConsumer, APIConsumer__factory } from "../typechain"
 
 task("withdraw-link", "Returns any LINK left in deployed contract")
   .addParam("contract", "The address of the contract")
@@ -29,11 +29,12 @@ task("withdraw-link", "Returns any LINK left in deployed contract")
 
     if (balance > constants.Zero) {
       // Create connection to Consumer Contract and call the withdraw function
-      const randomNumberConsumerContract: RandomNumberConsumer = RandomNumberConsumer__factory.connect(contractAddr, signer)
-      const transaction: ContractTransaction = await randomNumberConsumerContract.withdrawLink()
-      await transaction.wait()
-
-      console.log(`All LINK withdrew from contract ${contractAddr}. Transaction Hash: ${transaction.hash}`)
+      // TODO: below is an example. APIConsumer needs to have withdrawLink() defined.
+      // const apiConsumerContract: APIConsumer = APIConsumer__factory.connect(contractAddr, signer)
+      // const transaction: ContractTransaction = await apiConsumerContract.withdrawLink()
+      // await transaction.wait()
+      // console.log(`All LINK withdrew from contract ${contractAddr}. Transaction Hash: ${transaction.hash}`)
+      console.log(`All LINK withdrew from contract ${contractAddr}. TODO:fill in withdraw call.`)
     } else {
       console.log(`Contract doesn't have any LINK to withdraw`)
     }

@@ -39,19 +39,6 @@ const deployFunction: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
     log(`npx hardhat request-data --contract ${apiConsumer.address} --network ${networkName}`)
   }
   log(`----------------------------------------------------`)
-
-  //Now try Auto-fund VRFConsumer contract
-
-  const RandomNumberConsumer = await deployments.get("RandomNumberConsumer")
-  const randomNumberConsumer = await hre.ethers.getContractAt("RandomNumberConsumer", RandomNumberConsumer.address)
-
-  if (await autoFundCheck(randomNumberConsumer.address, networkName, linkTokenAddress, additionalMessage, hre)) {
-    await hre.run(`fund-link`, { contract: randomNumberConsumer.address, linkaddress: linkTokenAddress })
-  } else {
-    log(`Then run RandomNumberConsumer contract with the following command:`)
-    log(`npx hardhat request-random-number --contract ${randomNumberConsumer.address} --network ${networkName}`)
-  }
-  log(`----------------------------------------------------`)
 }
 
 export default deployFunction

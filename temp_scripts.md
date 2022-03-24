@@ -1,0 +1,2 @@
+npx hardhat request-reputation --contract 0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6 --accessorcontract 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
+npx hardhat get-reputation --contract 0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6 --accessorcontract 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707

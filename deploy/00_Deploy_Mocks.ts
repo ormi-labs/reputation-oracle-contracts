@@ -17,19 +17,6 @@ const deployFunction: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
 
     const linkToken = await deploy(`LinkToken`, { from: deployer, log: true })
 
-    await deploy(`EthUsdAggregator`, {
-      contract: `MockV3Aggregator`,
-      from: deployer,
-      log: true,
-      args: [DECIMALS, INITIAL_PRICE],
-    })
-
-    await deploy(`VRFCoordinatorMock`, {
-      from: deployer,
-      log: true,
-      args: [linkToken.address],
-    })
-
     await deploy(`MockOracle`, {
       from: deployer,
       log: true,
