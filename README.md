@@ -1,16 +1,31 @@
-<br/>
-<p align="center">
-<a href="https://chain.link" target="_blank">
-<img src="./box-img-lg.png" width="225" alt="Chainlink Hardhat logo">
-</a>
-</p>
-<br/>
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Build pass](https://github.com/AAVE/protocol-v2/actions/workflows/node.js.yml/badge.svg)](https://github.com/aave/protocol-v2/actions/workflows/node.js.yml)
+```                                                                                                                                             
+     OOOOOOOOO     RRRRRRRRRRRRRRRRR   MMMMMMMM               MMMMMMMMIIIIIIIIII
+   OO:::::::::OO   R::::::::::::::::R  M:::::::M             M:::::::MI::::::::I
+ OO:::::::::::::OO R::::::RRRRRR:::::R M::::::::M           M::::::::MI::::::::I
+O:::::::OOO:::::::ORR:::::R     R:::::RM:::::::::M         M:::::::::MII::::::II
+O::::::O   O::::::O  R::::R     R:::::RM::::::::::M       M::::::::::M  I::::I  
+O:::::O     O:::::O  R::::R     R:::::RM:::::::::::M     M:::::::::::M  I::::I  
+O:::::O     O:::::O  R::::RRRRRR:::::R M:::::::M::::M   M::::M:::::::M  I::::I  
+O:::::O     O:::::O  R:::::::::::::RR  M::::::M M::::M M::::M M::::::M  I::::I  
+O:::::O     O:::::O  R::::RRRRRR:::::R M::::::M  M::::M::::M  M::::::M  I::::I  
+O:::::O     O:::::O  R::::R     R:::::RM::::::M   M:::::::M   M::::::M  I::::I  
+O:::::O     O:::::O  R::::R     R:::::RM::::::M    M:::::M    M::::::M  I::::I  
+O::::::O   O::::::O  R::::R     R:::::RM::::::M     MMMMM     M::::::M  I::::I  
+O:::::::OOO:::::::ORR:::::R     R:::::RM::::::M               M::::::MII::::::II
+ OO:::::::::::::OO R::::::R     R:::::RM::::::M               M::::::MI::::::::I
+   OO:::::::::OO   R::::::R     R:::::RM::::::M               M::::::MI::::::::I
+     OOOOOOOOO     RRRRRRRR     RRRRRRRMMMMMMMM               MMMMMMMMIIIIIIIIII
+                                                                                                                                
+```
 
-# Chainlink Hardhat Box
- Implementation of the following 3 Chainlink features using the [Hardhat](https://hardhat.org/) development environment:
+# Credit: Chainlink Hardhat Box
+The Ormi reputation oracle is built on top of Chainlink.
+
+ Implementation of the following Chainlink feature using the [Hardhat](https://hardhat.org/) development environment:
  - [Request & Receive data](https://docs.chain.link/docs/request-and-receive-data)
- - [Chainlink Price Feeds](https://docs.chain.link/docs/using-chainlink-reference-contracts)
- - [Chainlink VRF](https://docs.chain.link/docs/chainlink-vrf)
+
 
  ## Requirements
 
@@ -49,12 +64,6 @@ If you plan on deploying to a local [Hardhat network](https://hardhat.org/hardha
 You can also use a `PRIVATE_KEY` instead of a `MNEMONIC` environment variable by uncommenting the section in the `hardhat.config.js`, and commenting out the `MNEMONIC` line.
 
 Then you can install all the dependencies
-
-```bash
-git clone https://github.com/smartcontractkit/hardhat-starter-kit/
-cd hardhat-starter-kit
-```
-then
 
 ```bash
 npm install
@@ -116,14 +125,6 @@ yarn test-integration
 
 The deployment output will give you the contract addresses as they are deployed. You can then use these contract addresses in conjunction with Hardhat tasks to perform operations on each contract
 
-
-### Chainlink Price Feeds
-The Price Feeds consumer contract has one task, to read the latest price of a specified price feed contract
-
-```bash
-npx hardhat read-price-feed --contract insert-contract-address-here --network network
-```
-
 ### Request & Receive Data
 The APIConsumer contract has two tasks, one to request external data based on a set of parameters, and one to check to see what the result of the data request is. This contract needs to be funded with link first:
 
@@ -140,34 +141,6 @@ npx hardhat request-data --contract insert-contract-address-here --network netwo
 Once you have successfully made a request for external data, you can see the result via the read-data task
 ```bash
 npx hardhat read-data --contract insert-contract-address-here --network network
-```
-
-
-### VRF Get a random number
-The VRFConsumer contract has two tasks, one to request a random number, and one to read the result of the random number request. This contract needs to be funded with link first:
-
-```bash
-npx hardhat fund-link --contract insert-contract-address-here --network network
-```
-
-Once it's funded, you can perform a VRF request with the request-random-number task:
-
-```bash
-npx hardhat request-random-number --contract insert-contract-address-here --network network
-```
-
-Once you have successfully made a request for a random number, you can see the result via the read-random-number task:
-
-```bash
-npx hardhat read-random-number --contract insert-contract-address-here --network network
-```
-
-### Keepers
-The KeepersCounter contract is a simple Chainlink Keepers enabled contract that simply maintains a counter variable that gets incremented each time the performUpkeep task is performed by a Chainlink Keeper. Once the contract is deployed, you should head to [https://keepers.chain.link/](https://keepers.chain.link/) to register it for upkeeps, then you can use the task below to view the counter variable that gets incremeneted by Chainlink Keepers
-
-
-```bash
-npx hardhat read-keepers-counter --contract insert-contract-address-here --network network
 ```
 
 ## Verify on Etherscan
