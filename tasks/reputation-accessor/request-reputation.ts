@@ -8,8 +8,12 @@ import { ContractTransaction } from "ethers"
 task("request-reputation", "Calls an Reputation Accessor Contract to request external data")
   .addParam("contract", "The address of the Reputation Accessor contract that you want to call")
   .addParam("accessorcontract", "The address of the Oracle Accessor API contract that you want to call")
+  .addParam("target", "The target id of the account whose reputation that you want to look up")
+  .addParam("chainType", "The chain type of the target account.")
   .setAction(async (taskArgs: TaskArguments, hre: HardhatRuntimeEnvironment): Promise<void> => {
     const contractAddr: string = taskArgs.contract
+    const targetId: string = taskArgs.target
+    const chainType: string = taskArgs.chainType
     const accessorContractAddr: string = taskArgs.accessorcontract
     const networkId: string | null = await getNetworkIdFromName(hre.network.name)
 
@@ -24,7 +28,11 @@ task("request-reputation", "Calls an Reputation Accessor Contract to request ext
     //Create connection to API Consumer Contract and call the createRequestTo function
     const reputationAccessorContract: ReputationAccessor = ReputationAccessor__factory.connect(contractAddr, signer)
 
-    const tx: ContractTransaction = await reputationAccessorContract.requestReputationScore(accessorContractAddr)
+    const tx: ContractTransaction = await reputationAccessorContract.requestReputationScore(
+      accessorContractAddr,
+      targetId,
+      chainType,
+    )
 
     console.log(
       `Contract ${contractAddr} external data request successfully called. Transaction Hash: ${tx.hash}\n`,

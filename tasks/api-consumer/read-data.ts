@@ -18,7 +18,7 @@ task("read-data", "Calls an API Consumer Contract to read data obtained from an 
 
     const apiConsumerContract: APIConsumer = APIConsumer__factory.connect(contractAddr, signer)
 
-    const result: BigNumber = await apiConsumerContract.volume()
+    const result: BigNumber = await apiConsumerContract.reputation_data()
     console.log(`Data is: ${result}`)
 
     if (result == constants.Zero && ["hardhat", "localhost", "ganache"].indexOf(hre.network.name) == 0) {
