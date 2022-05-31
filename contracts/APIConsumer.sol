@@ -1,12 +1,7 @@
 pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-import "hardhat/console.sol";
 
-/**
- * THIS IS AN EXAMPLE CONTRACT WHICH USES HARDCODED VALUES FOR CLARITY.
- * PLEASE DO NOT USE THIS CODE IN PRODUCTION.
- */
 contract APIConsumer is ChainlinkClient {
     using Chainlink for Chainlink.Request;
 
@@ -43,28 +38,19 @@ contract APIConsumer is ChainlinkClient {
     }
 
     /**
-     * Create a Chainlink request to retrieve API response, find the target
-     * data, then multiply by 1000000000000000000 (to remove decimal places from data).
+     * Create a Chainlink request to retrieve API response.
      */
-    function requestReputationData(bytes32 _target_id, bytes32 _chain_type) public returns (bytes32 requestId) {
+    function requestReputationData(string memory _query, string memory _path) public returns (bytes32 requestId) {
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-        string memory id_str = string(abi.encodePacked(_target_id));
-        string memory type_str = string(abi.encodePacked(_chain_type));
-        // Set the URL to perform the GET request on
-        string memory uri = string(
-            abi.encodePacked("https://ormi.herokuapp.com/data?", "id=", id_str, "&", "type=", type_str)
-        );
+        // Set the URL to perform the GET request on the endpoint.
+        string memory uri = string(bytes.concat(bytes("https://reputation-oracle-api.herokuapp.com/api/"), bytes(_query)));
 
-        // Example query: "https://ormi.herokuapp.com/data?id=0x2&type=ETH"
+        // Example query on Vitalik's address:
+        // "https://reputation-oracle-api.herokuapp.com/api/reputation/eth/0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
         request.add("get", uri);
 
-        request.add("path", "reputation");
-
-        // Multiply the result by 1000000000000000000 to remove decimals
-        // int timesAmount = 10**18;
-        // request.addInt("times", timesAmount);
-
-        console.log("APIConsumer: %s", uri);
+        // Example path: "reputation"
+        request.add("path", _path);
 
         // Sends the request
         return sendChainlinkRequestTo(oracle, request, fee);
