@@ -31,7 +31,11 @@ The Ormi reputation oracle is built on top of Chainlink.
 
 - [NPM](https://www.npmjs.com/) or [YARN](https://yarnpkg.com/)
 
-## Installation
+## Compile
+```
+TS_NODE_TRANSPILE_ONLY=1 yarn hardhat compile.
+Note: Without TS_NODE_TRANSPILE_ONLY=1 flag, compiling may result in error that generated 'typechain' artifact/folder does not exist.
+```
 
 ### Kovan Ethereum Testnet
 Set your `KOVAN_RPC_URL` [environment variable.](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html). You can get one for free at [Infura's site.](https://infura.io/) You'll also need to set the variable `PRIVATE_KEY`, which is your private key from your wallet, ie MetaMask. This is needed for deploying contracts to public networks. You can optionally set your `MNEMONIC` environment variable instead with some changes to the `hardhat.config.js`.
@@ -50,13 +54,7 @@ KOVAN_RPC_URL='www.infura.io/asdfadsfafdadf'
 PRIVATE_KEY='abcdef'
 MAINNET_RPC_URL="https://eth-mainnet.alchemyapi.io/v2/your-api-key"
 POLYGON_MAINNET_RPC_URL='https://rpc-mainnet.maticvigil.com'
-```
-`bash` example
-```
-export KOVAN_RPC_URL='www.infura.io/asdfadsfafdadf'
-export PRIVATE_KEY='abcdef'
-export MAINNET_RPC_URL='https://eth-mainnet.alchemyapi.io/v2/your-api-key'
-export POLYGON_MAINNET_RPC_URL='https://rpc-mainnet.maticvigil.com'
+ETHERSCAN_API_KEY="abcdef"
 ```
 
 If you plan on deploying to a local [Hardhat network](https://hardhat.org/hardhat-network/) that's a fork of the Ethereum mainnet instead of a public test network like Kovan, you'll also need to set your `MAINNET_RPC_URL` [environment variable.](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) and uncomment the `forking` section in `hardhat.config.js`. You can get one for free at [Alchemy's site.](https://alchemyapi.io/).
@@ -87,7 +85,7 @@ This Starter Kit is configured by default to attempt to auto-fund any newly depl
 If you wish to deploy the smart contracts without performing the auto-funding, run the following command when doing your deployment:
 
 ```bash
-npx hardhat deploy --tags main
+yarn hardhat deploy --tags main
 ```
 
 
@@ -98,14 +96,24 @@ Deployment scripts are in the [deploy](https://github.com/smartcontractkit/hardh
 This will deploy to a local hardhat network
 
 ```bash
-npx hardhat deploy
+yarn hardhat deploy
 ```
 
 To deploy to testnet:
 ```bash
-npx hardhat deploy --network kovan
+yarn hardhat deploy --network kovan
 ```
 
+## Verify
+To verify deployed contracts API Consumer & Reputation Accessor:
+
+```
+# Verify Deployed API Consumer Contract
+yarn hardhat verify-api-consumer-contract --network <NETWORK> --contract <DEPLOYED API CONSUMER>
+
+# Verify Deployed Reputation Accessor Contract. Note: ReputationAccessor contract has # no complex parameter so we can simply use hardhat verify.
+yarn hardhat verify --network <NETWORK> <DEPLOYED REPUTATION ACCESSOR>
+```
 ## Test
 Tests are located in the [test](https://github.com/smartcontractkit/hardhat-starter-kit/tree/main/test) directory, and are split between unit tests and integration tests. Unit tests should only be run on local environments, and integration tests should only run on live environments.
 
@@ -129,18 +137,22 @@ The deployment output will give you the contract addresses as they are deployed.
 The APIConsumer contract has two tasks, one to request external data based on a set of parameters, and one to check to see what the result of the data request is. This contract needs to be funded with link first:
 
 ```bash
-npx hardhat fund-link --contract insert-contract-address-here --network network
+yarn hardhat fund-link --contract insert-contract-address-here --network network
 ```
 
 Once it's funded, you can request external data by passing in a number of parameters to the request-data task. The contract parameter is mandatory, the rest are optional
 
 ```bash
-npx hardhat request-data --contract insert-contract-address-here --network network
+# Command
+yarn hardhat request-data --contract <CONTRACT ADDRESS> --query <QUERY DATA> --path <PATH> --network <NETWORK> 
+
+# Example
+yarn hardhat request-data --contract 0xB24e0cebBe0fCa1571419bb9B020B5DfE429571E --query 'data?id=0x2\&type=ETH' --path 'reputation' --network kovan
 ```
 
 Once you have successfully made a request for external data, you can see the result via the read-data task
 ```bash
-npx hardhat read-data --contract insert-contract-address-here --network network
+yarn hardhat read-data --contract <CONTRACT ADDRESS> --network <NETWORK>
 ```
 
 ## Verify on Etherscan
@@ -148,13 +160,15 @@ npx hardhat read-data --contract insert-contract-address-here --network network
 You'll need an `ETHERSCAN_API_KEY` environment variable. You can get one from the [Etherscan API site.](https://etherscan.io/apis)
 
 ```
-npx hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
+# 
+yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
 ```
 example:
 
 ```
-npx hardhat verify --network kovan 0x9279791897f112a41FfDa267ff7DbBC46b96c296 "0x9326BFA02ADD2366b30bacB125260Af641031331"
+yarn hardhat verify --network kovan 0x9279791897f112a41FfDa267ff7DbBC46b96c296 "0x9326BFA02ADD2366b30bacB125260Af641031331"
 ```
+
 
 ### Linting
 
